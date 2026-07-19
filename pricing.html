@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>百萬夜景小屋 房價試算</title>
+<style>
+  :root{
+    --brown:#6b4a3a;
+    --brown-dark:#4a3226;
+    --cream:#faf6f1;
+    --card:#ffffff;
+    --line:#e6ddd3;
+    --text:#3a2f28;
+    --muted:#8a7b6e;
+    --warn-bg:#fdf1e3;
+    --warn-text:#8a5a1f;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:"PingFang TC","Microsoft JhengHei",sans-serif;
+    background:var(--cream);
+    color:var(--text);
+    padding:24px 16px 60px;
+  }
+  .app{
+    max-width:480px;
+    margin:0 auto;
+  }
+  h1{
+    font-size:20px;
+    margin:0 0 4px;
+    color:var(--brown-dark);
+  }
+  .brand-name{
+    font-size:28px;
+    font-weight:800;
+  }
+  .subtitle{
+    font-size:13px;
+    color:var(--muted);
+    margin:0 0 20px;
+  }
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:18px 16px;
+    margin-bottom:16px;
+  }
+  .field{
+    margin-bottom:16px;
+  }
+  .field:last-child{margin-bottom:0;}
+  label{
+    display:block;
+    font-size:14px;
+    font-weight:600;
+    margin-bottom:6px;
+    color:var(--brown-dark);
+  }
+  input[type=date],
+  input[type=number]{
+    width:100%;
+    padding:10px 12px;
+    border:1px solid var(--line);
+    border-radius:8px;
+    font-size:15px;
+    background:#fff;
+    color:var(--text);
+  }
+  input[disabled]{
+    background:#f2ede6;
+    color:var(--muted);
+  }
+  .radio-group label{
+    font-weight:400;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-bottom:8px;
+    font-size:14px;
+  }
+  .radio-group input{margin:0;}
+  .radio-group label.disabled{color:var(--muted);}
+  .hint{
+    font-size:12px;
+    color:var(--brown);
+    background:#f2e9de;
+    padding:8px 10px;
+    border-radius:8px;
+    margin:8px 0 0;
+    line-height:1.5;
+  }
+  .addons label{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-weight:400;
+    font-size:14px;
+    margin-bottom:10px;
+  }
+  .addons label:last-child{margin-bottom:0;}
+  .addons input[type=checkbox]{width:16px;height:16px;}
+  .addons input[type=number]{width:70px;}
+  button{
+    width:100%;
+    padding:14px;
+    background:var(--brown);
+    color:#fff;
+    border:none;
+    border-radius:10px;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+  }
+  button:active{background:var(--brown-dark);}
+  #result{
+    margin-top:16px;
+  }
+  .result-badge{
+    display:inline-block;
+    font-size:12px;
+    padding:4px 10px;
+    border-radius:20px;
+    background:var(--brown);
+    color:#fff;
+    margin-bottom:12px;
+  }
+  .line{
+    display:flex;
+    justify-content:space-between;
+    font-size:14px;
+    padding:6px 0;
+    border-bottom:1px dashed var(--line);
+  }
+  .line:last-of-type{border-bottom:none;}
+  .line.total{
+    font-size:17px;
+    font-weight:700;
+    color:var(--brown-dark);
+    border-top:2px solid var(--brown);
+    margin-top:6px;
+    padding-top:12px;
+  }
+  .fee-note{
+    font-size:13px;
+    font-weight:700;
+    color:var(--warn-text);
+    background:var(--warn-bg);
+    margin:12px 0 0;
+    padding:10px 12px;
+    border-radius:8px;
+    border:1px solid #f0d3a8;
+    line-height:1.6;
+  }
+  .warn{
+    background:var(--warn-bg);
+    color:var(--warn-text);
+    font-size:12px;
+    padding:10px 12px;
+    border-radius:8px;
+    margin-top:12px;
+    line-height:1.6;
+  }
+  .footnote{
+    font-size:11px;
+    color:var(--muted);
+    margin-top:24px;
+    line-height:1.7;
+  }
+</style>
+</head>
+<body>
+<div style="text-align:center;padding:10px;background:#f5f0e8;font-size:0.9rem;">
+  想看住宿環境介紹與規定？<a href="index.html">點我查看住宿簡介</a>
+</div>
+<div class="app">
+  <h1><span class="brand-name">百萬夜景小屋</span> 房價試算</h1>
+  <p class="subtitle">背包方案／一般民宿方案・自動判斷平假日、寒暑假、連假、過年跨年</p>
+
+  <div class="card">
+    <div class="field">
+      <label>入住日期（第一晚）</label>
+      <input type="date" id="checkin">
+    </div>
+    <div class="field">
+      <label>住宿晚數</label>
+      <input type="number" id="nights" min="1" value="1">
+    </div>
+    <div class="field">
+      <label>入住人數（最多 6 人）</label>
+      <input type="number" id="people" min="1" max="6" value="2">
+    </div>
+    <div class="field">
+      <label>方案</label>
+      <div class="radio-group" id="planGroup">
+        <label id="planBackpackLabel"><input type="radio" name="plan" value="backpack" checked> 背包方案</label>
+        <label id="planUpgradeLabel"><input type="radio" name="plan" value="upgrade"> 升等一般民宿方案（+250/人/晚）</label>
+      </div>
+      <p class="hint" id="planHint" style="display:none;"></p>
+    </div>
+    <div class="field addons">
+      <label><input type="checkbox" id="parking"> 加購停車位</label>
+      <label><input type="checkbox" id="kitchen"> 加購廚房（升等方案已含免費廚房）</label>
+      <label>寵物數量<input type="number" id="pets" min="0" max="4" value="0"></label>
+    </div>
+  </div>
+
+  <button id="calcBtn">計算價格</button>
+
+  <div id="result"></div>
+
+  <p class="footnote">
+    本工具為報價估算輔助，實際收費以現場確認為準。<br>
+    連假／過年跨年為套裝報價，入住晚數會依套裝天數自動鎖定。
+  </p>
+</div>
+
+<script>
+// ---- 日期資料庫（每年可更新）----
+// 連假／過年跨年：checkinStart 為「特殊價開始起算」的第一晚（已含官方公告前一天）
+const SPECIAL_PERIODS = [
+  { name: '中秋節・教師節連假', checkinStart: '2026-09-24', nights: 4, tier: 'holiday' },
+  { name: '國慶連假',           checkinStart: '2026-10-08', nights: 3, tier: 'holiday' },
+  { name: '光復節連假',         checkinStart: '2026-10-23', nights: 3, tier: 'holiday' },
+  { name: '行憲紀念日連假',     checkinStart: '2026-12-24', nights: 3, tier: 'holiday' },
+  { name: '元旦跨年連假',       checkinStart: '2026-12-31', nights: 3, tier: 'newyear' },
+  { name: '春節連假',           checkinStart: '2027-02-03', nights: 7, tier: 'newyear' },
+  { name: '228連假',            checkinStart: '2027-02-26', nights: 3, tier: 'holiday' },
+  { name: '兒童節・清明連假',   checkinStart: '2027-04-02', nights: 4, tier: 'holiday' },
+  { name: '勞動節連假',         checkinStart: '2027-04-29', nights: 3, tier: 'holiday' },
+];
+
+// 寒暑假：一般連續長假期間，適用寒暑假平假日價格（非套裝價）
+const BREAK_PERIODS = [
+  { name: '2026暑假', start: '2026-07-01', end: '2026-08-30' },
+  { name: '2027寒假', start: '2027-01-21', end: '2027-02-10' },
+];
+
+function toDate(str){
+  const [y,m,d] = str.split('-').map(Number);
+  return new Date(y, m-1, d);
+}
+function addDays(date, n){
+  const d = new Date(date);
+  d.setDate(d.getDate()+n);
+  return d;
+}
+function fmt(date){
+  const y=date.getFullYear(), m=String(date.getMonth()+1).padStart(2,'0'), d=String(date.getDate()).padStart(2,'0');
+  return `${y}-${m}-${d}`;
+}
+
+function classify(dateStr){
+  const d = toDate(dateStr);
+  for(const sp of SPECIAL_PERIODS){
+    const start = toDate(sp.checkinStart);
+    const endExclusive = addDays(start, sp.nights);
+    if(d >= start && d < endExclusive){
+      return { type:'special', ...sp, start };
+    }
+  }
+  for(const br of BREAK_PERIODS){
+    if(!br.start) continue;
+    const start = toDate(br.start), end = toDate(br.end);
+    if(d >= start && d <= end){
+      return { type:'break', name: br.name };
+    }
+  }
+  return { type:'normal' };
+}
+
+const checkinEl = document.getElementById('checkin');
+const nightsEl = document.getElementById('nights');
+const peopleEl = document.getElementById('people');
+const planHintEl = document.getElementById('planHint');
+const planBackpackLabel = document.getElementById('planBackpackLabel');
+const planUpgradeLabel = document.getElementById('planUpgradeLabel');
+const planBackpackRadio = planBackpackLabel.querySelector('input');
+const planUpgradeRadio = planUpgradeLabel.querySelector('input');
+
+checkinEl.addEventListener('change', updatePlanState);
+
+function updatePlanState(){
+  if(!checkinEl.value) return;
+  const cls = classify(checkinEl.value);
+  planBackpackLabel.classList.remove('disabled');
+  planBackpackRadio.disabled = false;
+  nightsEl.disabled = false;
+  planHintEl.style.display = 'none';
+
+  if(cls.type === 'special'){
+    planUpgradeRadio.checked = true;
+    planBackpackRadio.disabled = true;
+    planBackpackLabel.classList.add('disabled');
+    nightsEl.value = cls.nights;
+    nightsEl.disabled = true;
+    planHintEl.style.display = 'block';
+    planHintEl.textContent = `這段日期屬於「${cls.name}」，此期間只提供一般民宿方案（套裝報價），已自動將晚數設定為 ${cls.nights} 晚。`;
+  } else if(cls.type === 'break'){
+    planHintEl.style.display = 'block';
+    planHintEl.textContent = `這段日期屬於「${cls.name}」，套用寒暑假平假日價格，背包／升等方案皆可選。`;
+  }
+}
+
+document.getElementById('calcBtn').addEventListener('click', calculate);
+
+function calculate(){
+  const checkin = checkinEl.value;
+  const nights = parseInt(nightsEl.value, 10);
+  const people = Math.min(6, Math.max(1, parseInt(peopleEl.value,10)));
+  const plan = document.querySelector('input[name=plan]:checked').value;
+  const parking = document.getElementById('parking').checked;
+  const kitchen = document.getElementById('kitchen').checked;
+  const pets = parseInt(document.getElementById('pets').value,10) || 0;
+  const resultEl = document.getElementById('result');
+
+  if(!checkin || !nights || nights < 1){
+    resultEl.innerHTML = '<div class="warn">請先選擇入住日期與晚數。</div>';
+    return;
+  }
+
+  const checkinClass = classify(checkin);
+  let lines = [];
+  let total = 0;
+  let badge = '';
+  let warnings = [];
+
+  if(checkinClass.type === 'special'){
+    badge = checkinClass.name + '（套裝報價）';
+    const tier = checkinClass.tier;
+    const base = tier === 'newyear' ? 6000 : 4500;
+    const extraRate = tier === 'newyear' ? 1500 : 1200;
+    const sixthRate = tier === 'newyear' ? 1350 : 950;
+
+    let pkgPrice = base;
+    lines.push({label:`套裝價（${Math.min(people,3)}人內）`, amount: base});
+    for(let p=4; p<=Math.min(people,5); p++){
+      pkgPrice += extraRate;
+      lines.push({label:`第${p}人加價`, amount: extraRate});
+    }
+    if(people >= 6){
+      pkgPrice += sixthRate;
+      lines.push({label:'第6人加價', amount: sixthRate});
+    }
+    total += pkgPrice;
+
+    const parkingRate = 100;
+    if(parking){
+      const c = parkingRate * checkinClass.nights;
+      lines.push({label:`停車位（${checkinClass.nights}晚 × ${parkingRate}）`, amount: c});
+      total += c;
+    }
+    if(kitchen){
+      lines.push({label:'廚房（一般民宿方案已含免費使用）', amount: 0});
+    }
+    if(pets > 0){
+      const c = 450 + 350*(pets-1);
+      lines.push({label:`寵物（${pets}隻）`, amount: c});
+      total += c;
+    }
+  } else {
+    const isBreakCheckin = checkinClass.type === 'break';
+    badge = isBreakCheckin ? checkinClass.name + '（寒暑假價）' : '一般平假日價';
+
+    let backpackTotal = 0;
+    for(let i=0; i<nights; i++){
+      const d = addDays(toDate(checkin), i);
+      const dStr = fmt(d);
+      const nightCls = classify(dStr);
+      if(nightCls.type === 'special'){
+        warnings.push(`第 ${i+1} 晚（${dStr}）落在「${nightCls.name}」套裝期間內，此工具無法自動混合套裝與一般價格計算，這晚的金額僅為概估，請與我確認實際報價。`);
+      }
+      const isBreak = nightCls.type === 'break' || (nightCls.type !== 'special' && isBreakCheckin && checkinClass.name === nightCls.name);
+      const dow = d.getDay();
+      const isWeekend = dow === 5 || dow === 6;
+      const base2 = isBreak ? (isWeekend ? 2100 : 1900) : (isWeekend ? 1900 : 1600);
+      let nightly = base2;
+      if(people > 2){
+        if(isBreak){
+          for(let p=3; p<=Math.min(people,5); p++) nightly += 800;
+          if(people >= 6) nightly += 700;
+        } else {
+          nightly += 800 * (Math.min(people,6) - 2);
+        }
+      }
+      backpackTotal += nightly;
+    }
+    lines.push({label:`背包方案房價（${nights}晚）`, amount: backpackTotal});
+    total += backpackTotal;
+
+    if(plan === 'upgrade'){
+      const c = 250 * people * nights;
+      lines.push({label:`升等一般民宿方案（${people}人 × ${nights}晚 × 250）`, amount: c});
+      total += c;
+    }
+
+    const parkingRate = plan === 'upgrade' ? 100 : 150;
+    if(parking){
+      const c = parkingRate * nights;
+      lines.push({label:`停車位（${nights}晚 × ${parkingRate}）`, amount: c});
+      total += c;
+    }
+    if(kitchen){
+      if(plan === 'upgrade'){
+        lines.push({label:'廚房（一般民宿方案已含免費使用）', amount: 0});
+      } else {
+        lines.push({label:'廚房（整趟住宿一次）', amount: 300});
+        total += 300;
+      }
+    }
+    if(pets > 0){
+      const c = 450 + 350*(pets-1);
+      lines.push({label:`寵物（${pets}隻）`, amount: c});
+      total += c;
+    }
+  }
+
+  let html = `<div class="card">`;
+  html += `<span class="result-badge">${badge}</span>`;
+  lines.forEach(l=>{
+    html += `<div class="line"><span>${l.label}</span><span>$${l.amount.toLocaleString()}</span></div>`;
+  });
+  html += `<div class="line total"><span>總金額</span><span>$${total.toLocaleString()}</span></div>`;
+  html += `<p class="fee-note">此價格不含平台手續費（約總價15%）。如果需要節省手續費，可以到 Airbnb 平台下單，下單前為您改價格。</p>`;
+  html += `</div>`;
+  if(warnings.length){
+    html += `<div class="warn">${warnings.join('<br><br>')}</div>`;
+  }
+  resultEl.innerHTML = html;
+}
+
+// 預設帶入今天日期
+(function(){
+  const today = new Date();
+  checkinEl.value = fmt(today);
+  updatePlanState();
+})();
+</script>
+</body>
+</html>
