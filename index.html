@@ -207,6 +207,58 @@
     background: var(--surface-2);
   }
 
+  /* plan comparison */
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1.3rem;
+  }
+  .compare-col {
+    border-radius: 10px;
+    padding: 1.2rem 1.3rem;
+    background: var(--surface-2);
+  }
+  .compare-col.upgrade {
+    background: var(--accent);
+  }
+  .compare-col h4 {
+    font-family: "Microsoft JhengHei", "PingFang TC", "Noto Sans TC", sans-serif;
+    font-size: 0.98rem;
+    font-weight: 700;
+    margin: 0 0 0.25rem;
+    color: var(--accent-strong);
+  }
+  .compare-col.upgrade h4 { color: #FFFDF8; }
+  .compare-col .diff {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 0.85rem;
+  }
+  .compare-col.upgrade .diff { color: rgba(255,253,248,0.78); }
+  .compare-col ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.55rem; }
+  .compare-col li {
+    position: relative;
+    padding-left: 1.1rem;
+    font-size: 0.9rem;
+    color: var(--text);
+  }
+  .compare-col li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.6em;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .compare-col.upgrade li { color: #FFFDF8; }
+  .compare-col.upgrade li::before { background: #FFFDF8; }
+  @media (max-width: 560px) {
+    .compare-grid { grid-template-columns: 1fr; }
+  }
+
   .line-cta {
     margin-top: 1.4rem;
     display: flex;
@@ -311,10 +363,6 @@
   footer .fname { color: var(--accent-strong); font-family: "Microsoft JhengHei", "PingFang TC", "Noto Sans TC", sans-serif; }
 </style>
 
-<div style="text-align:center;padding:10px;background:#f5f0e8;font-size:0.9rem;">
-  想查詢即時房價？<a href="pricing.html">點我試算房價</a>
-</div>
-
 <div class="hero">
   <div class="hero-inner">
     <div class="hero-eyebrow">雲林・斗六・劍湖山旁</div>
@@ -372,12 +420,27 @@
         <div class="price-tile"><div class="label">第三人起</div><div class="num">800<span class="unit">／人</span></div></div>
       </div>
       <p class="muted" style="font-size:0.85rem; margin-bottom:1.3rem;">平台上會收取手續費，所以平台預訂價格較高。</p>
-      <ul class="plan-list">
-        <li>不提供毛巾浴巾，退房時需要自行拆床／被單、枕套</li>
-        <li>可付費使用停車位（150／夜）、廚房（300／次）</li>
-      </ul>
-      <div class="upgrade-box">
-        也可加價升等為一般民宿方案（＋250／人，2025 年為 200／人）：提供毛巾浴巾、免費使用廚房、停車優惠（100／夜）、延後至下午 2 點退房（若隔天無客人入住才能提供）。
+      <div class="compare-grid">
+        <div class="compare-col">
+          <h4>背包方案</h4>
+          <div class="diff">預設方案，上方價格即為此方案</div>
+          <ul>
+            <li>不提供毛巾浴巾</li>
+            <li>退房時需自行拆床／被單、枕套</li>
+            <li>停車位需付費（150／夜）</li>
+            <li>廚房需付費使用（300／次）</li>
+          </ul>
+        </div>
+        <div class="compare-col upgrade">
+          <h4>一般民宿方案</h4>
+          <div class="diff">加價升等：＋250／人（2025 年為 200／人）</div>
+          <ul>
+            <li>提供毛巾浴巾</li>
+            <li>免費使用廚房</li>
+            <li>停車優惠（100／夜）</li>
+            <li>延後至下午 2 點退房（若隔天無客人入住才能提供）</li>
+          </ul>
+        </div>
       </div>
       <div class="line-cta">
         <a class="line-btn" href="https://lin.ee/XA8g552" target="_blank" rel="noopener">加入官方帳號，為您試算價格 →</a>
