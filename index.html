@@ -281,6 +281,22 @@
   }
   .line-btn:hover { background: var(--accent-strong); transform: translateY(-1px); }
   .line-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  .price-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: transparent;
+    color: var(--accent-strong);
+    text-decoration: none;
+    font-size: 0.92rem;
+    font-weight: 600;
+    padding: 0.7rem 1.3rem;
+    border-radius: 999px;
+    border: 1.5px solid var(--accent);
+    transition: transform 0.15s ease, background 0.15s ease, color 0.15s ease;
+  }
+  .price-btn:hover { background: var(--accent); color: #FFFDF8; transform: translateY(-1px); }
+  .price-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
   /* facilities two-col */
   .fac-cols {
@@ -443,7 +459,8 @@
         </div>
       </div>
       <div class="line-cta">
-        <a class="line-btn" href="https://lin.ee/XA8g552" target="_blank" rel="noopener">加入官方帳號，為您試算價格 →</a>
+        <a class="price-btn" href="https://million-view-house.netlify.app" target="_blank" rel="noopener">點我試算房價</a>
+        <a class="line-btn" href="https://lin.ee/XA8g552" target="_blank" rel="noopener">加入官方帳號，立即預定 →</a>
       </div>
     </div>
   </section>
